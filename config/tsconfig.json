@@ -1,0 +1,47 @@
+{
+  "include": [
+    "./**/*.js",
+    "./**/*.jsx",
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "*.spec.ts"
+  ],
+  "compilerOptions": {
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": false,
+    "target": "ES6",
+    "module": "CommonJS",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "",
+    "baseUrl": "../..",
+    "paths": {
+      "client/*": [
+        "./src/client/*"
+      ],
+      "server/*": [
+        "./src/server/*"
+      ]
+    }
+  },
+  "typeAcquisition": {
+    "include": [
+      "moment"
+    ]
+  }
+}

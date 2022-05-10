@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>DDT 02</name>
+   <tag>DDT, DDT02</tag>
+   <comment></comment>
+   <testCaseGuid>9986921c-50cb-45c1-9c3c-7f2ac18607db</testCaseGuid>
+   <testDataLinks>
+      <combinationType>ONE</combinationType>
+      <id>47b95731-5449-453e-86bd-69b3852871e8</id>
+      <iterationEntity>
+         <iterationType>ALL</iterationType>
+         <value></value>
+      </iterationEntity>
+      <testDataId>Data Files/DDT Data</testDataId>
+   </testDataLinks>
+   <variableLinks>
+      <testDataLinkId>47b95731-5449-453e-86bd-69b3852871e8</testDataLinkId>
+      <type>DATA_COLUMN</type>
+      <value>key</value>
+      <variableId>99fa4e7b-41cd-49a3-b902-b43a87f9ccde</variableId>
+   </variableLinks>
+   <variableLinks>
+      <testDataLinkId>47b95731-5449-453e-86bd-69b3852871e8</testDataLinkId>
+      <type>DATA_COLUMN</type>
+      <value>value</value>
+      <variableId>227f2b1d-8c06-4a6e-be0a-65dc59beb98e</variableId>
+   </variableLinks>
+   <variable>
+      <defaultValue>''</defaultValue>
+      <description></description>
+      <id>4d3578b2-b163-470d-b159-509dd7161835</id>
+      <masked>false</masked>
+      <name>key</name>
+   </variable>
+   <variable>
+      <defaultValue>''</defaultValue>
+      <description></description>
+      <id>58e3f505-3534-4336-b331-e0d2da6cbb85</id>
+      <masked>false</masked>
+      <name>value</name>
+   </variable>
+</TestCaseEntity>

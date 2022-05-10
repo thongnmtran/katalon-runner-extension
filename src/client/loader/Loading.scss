@@ -1,0 +1,101 @@
+
+@function linear-gradient-background($angle, $opacity) {
+  @return linear-gradient($angle, rgba(222, 252, 249, $opacity), rgba(202, 222, 252, $opacity), rgba(195, 190, 240, $opacity), rgba(204, 168, 233, $opacity));
+}
+
+@function radial-gradient-background($opacity) {
+  @return radial-gradient(rgba(222, 252, 249, $opacity), rgba(202, 222, 252, $opacity), rgba(195, 190, 240, $opacity), rgba(204, 168, 233, $opacity));
+}
+
+$loading-background: radial-gradient-background(.1);
+$spiner-background: linear-gradient-background(120deg, .9);
+
+$text-color: #add9f3;
+
+.loading {
+  background: $loading-background;
+  // position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Courier, monospace, Geneva, Verdana, sans-serif;
+  color: $text-color;
+  letter-spacing: .1em;
+  font-weight: 500;
+  font-size: 1.5em;
+  text-align: center;
+  transition: opacity .3s ease-in-out;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 8px;
+
+  &.overlaping {
+    pointer-events: all;
+    opacity: 1;
+  }
+
+  &.fullscreen {
+    position: fixed;
+  }
+
+  & > div > div {
+    background: $spiner-background !important;
+  }
+
+  &.intable {
+    padding: 40px 0;
+    position: relative;
+    top: 39px;
+    margin-bottom: -70px;
+  }
+
+  .loading-text {
+    width: 100%;
+    margin-top: 40px;
+
+    span {
+      opacity: .5;
+    }
+    @for $i from 1 through 50 {
+      span:nth-child(#{$i}) {
+        animation: fadeIn 1s ease-in-out ($i * 50ms) infinite alternate both;
+      }
+    }
+  }
+  
+  .reloading-text {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #de8dff;
+  }
+
+  .abort-reloading-button {
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    color: rgba(157, 156, 156, .87);
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    background-color: #374051;
+    padding: 4px 10px;
+    font-size: 0.8125rem;
+    min-width: 64px;
+    box-sizing: border-box;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.75;
+    border-radius: 4px;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: none;
+      background-color: #232a38;
+    }
+  }
+}
