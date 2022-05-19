@@ -17,7 +17,9 @@ module.exports = {
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.js', '.json', '.jsx', '.ts', '.tsx'],
     alias: {
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom',
+      client: resolve(__dirname, '../../src/client'),
+      main: resolve(__dirname, '../../src/main')
     }
   },
   module: {

@@ -7,6 +7,7 @@
   "exclude": [
     "node_modules",
     "**/node_modules/*",
+    "**/*.d.ts",
     "*.spec.ts"
   ],
   "compilerOptions": {
@@ -27,14 +28,14 @@
     "jsxImportSource": "react",
     "allowJs": true,
     "checkJs": false,
-    "outDir": "",
-    "baseUrl": "../..",
+    "outDir": "@types",
+    "baseUrl": "../",
     "paths": {
       "client/*": [
-        "./src/client/*"
+        "client/*"
       ],
-      "server/*": [
-        "./src/server/*"
+      "main/*": [
+        "main/*"
       ]
     }
   },

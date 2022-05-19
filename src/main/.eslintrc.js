@@ -32,14 +32,16 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module'
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint'
+  ],
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.ts', '.tsx'
+        ]
       },
       webpack: {
-        config: 'config/webpack/webpack.common.js'
+        config: './webpack.config.js'
       }
     }
   },
@@ -54,12 +56,24 @@ module.exports = {
         tsx: 'never'
       }
     ],
-    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    indent: ['error', 2],
-    'linebreak-style': ['error', 'windows'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-    'comma-dangle': ['error', 'never'],
+    'react/jsx-filename-extension': [
+      2,
+      {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'
+        ]
+      }
+    ],
+    indent: ['error',
+      2
+    ],
+    'linebreak-style': ['error', 'windows'
+    ],
+    quotes: ['error', 'single'
+    ],
+    semi: ['error', 'always'
+    ],
+    'comma-dangle': ['error', 'never'
+    ],
     'react/destructuring-assignment': 0,
     'react/prop-types': 0,
     'import/no-extraneous-dependencies': 0,
@@ -86,7 +100,7 @@ module.exports = {
     'no-unused-vars': 0,
     'no-restricted-imports': [
       'error',
-      { patterns: ['@material-ui/*/*/*', '!@material-ui/core/test-utils/*'] }
+      { patterns: ['@material-ui /*/*/*', '!@material-ui/core/test-utils/*'] }
     ],
     'react/jsx-props-no-spreading': 0,
     'no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 0 }],

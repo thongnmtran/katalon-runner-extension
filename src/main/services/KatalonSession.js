@@ -1,6 +1,5 @@
-import { io } from "socket.io-client";
-global.window = {};
-// const P2P = require('socket.io-p2p');
+import EventName from 'main/utils/EventName';
+import { io } from 'socket.io-client';
 
 
 export default class KatalonSession {
@@ -11,16 +10,14 @@ export default class KatalonSession {
         ...options
       });
 
-      // this.p2p = new P2P(this.socket, { autoUpgrade: false });
-
-      this.socket.on('connect', () => {
+      this.socket.on(EventName.connect, () => {
         console.log(`> Katalon session created  🚀 (${this.socket.id})`);
         resolve(this);
       });
-      this.socket.on('disconnect', () => {
+      this.socket.on(EventName.disconnect, () => {
         console.warn('> Katalon session diconnected!');
       });
-      this.socket.on('connect_error', (error) => {
+      this.socket.on(EventName.connectError, (error) => {
         console.log('> Katalon session error  🚀');
         reject(error);
       });
@@ -32,7 +29,7 @@ export default class KatalonSession {
   }
 
   log(message) {
-    this.socket?.emit('log', message);
+    this.socket?.emit(EventName.log, message);
   }
 
   on(event, listener) {
@@ -55,6 +52,6 @@ export default class KatalonSession {
   }
 
   sendTo(target, event, ...args) {
-    this.socket.emit('send-to', { target, event, args });
+    this.socket.emit(EventName.sendTo, { target, event, args });
   }
-};
+}

@@ -2,7 +2,7 @@
 	"name": "katalon-runner",
 	"displayName": "Katalon Runner",
 	"description": "",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.66.0",
 		"node": "^14.x"
@@ -14,6 +14,13 @@
 		"onCommand:katalon-runner.helloWorld",
 		"onCustomEditor:katalon-runner.editor.testcase"
 	],
+	"publisher": "KatalonStudioz",
+	"author": {
+		"name": "Katalon Studio"
+	},
+	"repository": {
+		"url": "https://github.com/thongnmtran/katalon-runner-extension"
+	},
 	"browser": "./dist/web/extension.js",
 	"contributes": {
 		"commands": [
@@ -29,6 +36,16 @@
 				"selector": [
 					{
 						"filenamePattern": "*.tc"
+					}
+				],
+				"priority": "default"
+			},
+			{
+				"viewType": "katalon-runner.editor.testsuite",
+				"displayName": "Katalon Test Suite Editor",
+				"selector": [
+					{
+						"filenamePattern": "*.ts"
 					}
 				],
 				"priority": "default"
@@ -59,10 +76,13 @@
 		"@mui/styles": "^5.6.2",
 		"@mui/x-data-grid": "^5.10.0",
 		"@mui/x-data-grid-generator": "^5.10.0",
+		"abstract-syntax-tree": "^2.20.6",
 		"axios": "^0.27.2",
 		"classnames": "^2.3.1",
 		"colors": "^1.4.0",
 		"core-js": "^3.22.2",
+		"moment": "^2.29.3",
+		"path-browserify": "^1.0.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-epic-spinners": "^0.5.0",
@@ -88,6 +108,7 @@
 		"copy-webpack-plugin": "^10.2.4",
 		"eslint": "^8.11.0",
 		"eslint-config-airbnb": "^19.0.4",
+		"eslint-import-resolver-webpack": "^0.13.2",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-jsx-a11y": "^6.5.1",
 		"eslint-plugin-react": "^7.29.4",
