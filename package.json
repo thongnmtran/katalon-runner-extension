@@ -2,7 +2,7 @@
 	"name": "katalon-runner",
 	"displayName": "Katalon Runner",
 	"description": "",
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"engines": {
 		"vscode": "^1.66.0",
 		"node": "^14.x"
@@ -59,6 +59,7 @@
 		"compile-web": "webpack",
 		"watch-web": "webpack --watch",
 		"package-web": "webpack --mode production --devtool hidden-source-map",
+		"package": "vsce package",
 		"lint": "eslint src --ext ts",
 		"web": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
 		"watch": "cls && npx webpack serve --config config/webpack/webpack.dev.js --progress",

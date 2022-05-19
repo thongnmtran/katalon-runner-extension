@@ -8,8 +8,10 @@ export default class VSCodeUtils {
 
   static async getTestScript(testCasePath: string) {
     const basePath = testCasePath.replace('Test Cases', 'Scripts').replace('.tc', '');
-    const pattern = new vscode.RelativePattern(basePath, '*.groovy');
-    const scriptFiles = await vscode.workspace.findFiles(pattern);
+    const roots = await vscode.workspace.workspaceFolders;
+    const relativePath = basePath.replace(`${roots[0].uri.path}/`, '');
+    const pattern = `**/${relativePath}/*.groovy`;
+    const scriptFiles = await vscode.workspace.findFiles(pattern, '**/node_modules/**');
     const scriptFile = scriptFiles[0];
     return vscode.workspace.openTextDocument(scriptFile);
   }

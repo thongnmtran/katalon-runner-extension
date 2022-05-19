@@ -18,7 +18,7 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
   private output: vscode.OutputChannel;
 
   private async updateSteps() {
-    const testCasePath = this.document?.fileName || '';
+    const testCasePath = this.document?.uri.path || '';
     const scriptDocument = await VSCodeUtils.getTestScript(testCasePath);
     const script = scriptDocument.getText();
     const tree = parse(script);
@@ -123,7 +123,7 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
         session.sendTo(event.data?.instance?.id, EventName.stop);
         break;
       case EventName.openScript: {
-        const testCasePath = this.document?.fileName || '';
+        const testCasePath = this.document?.uri.path || '';
         const scriptDocument = await VSCodeUtils.getTestScript(testCasePath);
         vscode.window.showTextDocument(scriptDocument);
       }

@@ -14,7 +14,7 @@ export default class TestSuiteEditorProvider extends BaseEditorProvider {
 
   private async updateContent() {
     this.updateText();
-    const testCasePath = this.document?.fileName || '';
+    const testCasePath = this.document?.uri.path || '';
     const scriptDocument = await VSCodeUtils.getTestScript(testCasePath);
     const script = scriptDocument.getText();
     const tree = parse(script);
