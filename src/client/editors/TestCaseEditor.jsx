@@ -1,9 +1,9 @@
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import vscode from 'client/utils/vscode';
 import EventName from 'main/utils/EventName';
+import { postEvent } from 'client/utils/CodeUtils';
 import InstancesTable from './InstancesTable';
 import StepsTable from './StepsTable';
 
@@ -12,6 +12,7 @@ export default function TestCaseEditor() {
   const [testCase, setTestCase] = React.useState(null);
   const [instances, setInstances] = React.useState([]);
   const [steps, setSteps] = React.useState([]);
+  const [isOnline, setOnline] = React.useState(false);
 
   React.useEffect(() => {
     const state = vscode.getState();
@@ -19,14 +20,8 @@ export default function TestCaseEditor() {
       setTestCase(parseTestCase(state.text));
       setInstances(state.instances || []);
       setSteps(state.steps || []);
+      setOnline(state.online || false);
     }
-  }, []);
-
-  const postEvent = React.useCallback((type, data) => {
-    vscode.postMessage({
-      type,
-      data
-    });
   }, []);
 
   const handleRunTestCase = React.useCallback((instance) => {
@@ -59,26 +54,36 @@ export default function TestCaseEditor() {
   React.useEffect(() => {
     function onMessage(event) {
       const message = event.data;
+
+      const setState = (data = {}) => {
+        const state = vscode.getState();
+        vscode.setState({ ...state, ...data });
+      };
+
       switch (message.type) {
       case EventName.update: {
         const { text } = message;
-        vscode.setState({ text });
+        setState({ text });
         setTestCase(parseTestCase(text));
         break;
       }
       case EventName.setInstances: {
         const { instances: newInstances } = message;
+        setState({ instances: newInstances });
         setInstances(newInstances);
-        const state = vscode.getState();
-        vscode.setState({ ...state, instances: newInstances });
         break;
       }
       case EventName.setSteps: {
         const { steps: newSteps } = message;
+        setState({ steps: newSteps });
         setSteps(newSteps);
-        const state = vscode.getState();
         console.log(newSteps);
-        vscode.setState({ ...state, steps: newSteps });
+        break;
+      }
+      case EventName.setOnline: {
+        const { online: newOnline } = message;
+        setState({ online: newOnline });
+        setOnline(newOnline);
         break;
       }
       default:
@@ -121,6 +126,7 @@ export default function TestCaseEditor() {
               onRun={handleRunTestCase}
               onStop={handleStopServer}
               onStartNewInstance={handleStartNewInstance}
+              isOnline={isOnline}
             />
           </Grid>
         </Grid>

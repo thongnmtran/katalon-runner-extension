@@ -15,6 +15,8 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
 
   private session: KatalonSession;
 
+  private output: vscode.OutputChannel;
+
   private async updateSteps() {
     const testCasePath = this.document?.fileName || '';
     const scriptDocument = await VSCodeUtils.getTestScript(testCasePath);
@@ -49,16 +51,23 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
     this.updateSteps();
   }
 
+  private async updateSessionStatus() {
+    this.postMessage(EventName.setOnline, { online: this.session.connected });
+  }
+
   private updateInstances(instances: any[]) {
     this.postMessage(EventName.setInstances, { instances });
   }
 
   protected dispose(): void {
     this.session?.disconnect();
+    this.output?.dispose();
   }
 
   protected async init() {
+    // const output = vscode.window.createOutputChannel('Katalon Runner', 'javascript');
     const output = VSCodeUtils.getOutput(getBaseName(this.document.fileName));
+    this.output = output;
 
     const session = new KatalonSession();
     this.session = session;
@@ -73,7 +82,14 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
     session.emit(EventName.getInstances, (instances: any[]) => {
       this.updateInstances(instances);
     });
+    session.on(EventName.disconnect, () => {
+      this.updateSessionStatus();
+    });
+    session.on(EventName.connect, () => {
+      this.updateSessionStatus();
+    });
     this.updateContent();
+    this.updateSessionStatus();
 
     // Receive message from the webview.
     this.webview?.onDidReceiveMessage(async (event: any) => {
@@ -89,7 +105,7 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
         break;
       }
       case EventName.run: {
-        vscode.window.showInformationMessage('Trigger Run!');
+        // vscode.window.showInformationMessage('Trigger Run!');
 
         output.clear();
         output.show();
@@ -100,11 +116,17 @@ export default class TestCaseEditorProvider extends BaseEditorProvider {
         output.appendLine('╚════════════════════════════════════════════════╝'.padStart(90, ' '));
         output.appendLine('');
 
-        session.sendTo(event.data?.instance?.id, EventName.run, './build/firstTest.js');
+        session.sendTo(event.data?.instance?.id, EventName.run, `./build/${getBaseName(this.document.fileName)}.js`);
         break;
       }
       case EventName.stop:
         session.sendTo(event.data?.instance?.id, EventName.stop);
+        break;
+      case EventName.openScript: {
+        const testCasePath = this.document?.fileName || '';
+        const scriptDocument = await VSCodeUtils.getTestScript(testCasePath);
+        vscode.window.showTextDocument(scriptDocument);
+      }
         break;
       default:
         break;

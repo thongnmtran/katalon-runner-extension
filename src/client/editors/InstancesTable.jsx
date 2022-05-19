@@ -4,14 +4,28 @@ import {
 } from '@mui/x-data-grid';
 import StopCircleRounded from '@mui/icons-material/StopCircleRounded';
 import PlayCircleRounded from '@mui/icons-material/PlayCircleRounded';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Box } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import vscode from 'client/utils/vscode';
 import moment from 'moment';
 
 
+function OnLineIcon({ isOnline }) {
+  return (
+    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+      <Box sx={{
+        width: '1rem',
+        height: '1rem',
+        borderRadius: '50%',
+        background: isOnline ? 'radial-gradient(at 20% 10%, #2be77f, #0e6234)' : 'grey'
+      }}
+      />
+    </Box>
+  );
+}
+
 export default function InstancesTable({
-  instances, onRun, onStop, onStartNewInstance
+  instances, onRun, onStop, onStartNewInstance, isOnline
 }) {
   const dispatchEvent = React.useCallback((type, data) => () => {
     vscode.postMessage({
@@ -40,11 +54,14 @@ export default function InstancesTable({
     <GridToolbarContainer>
       <Grid container spacing={1}>
         <Grid item>
+          <OnLineIcon isOnline={isOnline} />
+        </Grid>
+        <Grid item>
           <Button
             size="small"
             variant="outlined"
             onClick={dispatchEvent('test')}
-            disabled={!!instances?.length}
+            // disabled={!!instances?.length}
           >
             <PlayArrow fontSize="inherit" /> Test
           </Button>
@@ -54,14 +71,14 @@ export default function InstancesTable({
             size="small"
             variant="outlined"
             onClick={() => onStartNewInstance()}
-            disabled={!!instances?.length}
+            // disabled={!!instances?.length}
           >
             <PlayArrow fontSize="inherit" /> Start a new instance
           </Button>
         </Grid>
       </Grid>
     </GridToolbarContainer>
-  ), []);
+  ), [isOnline]);
 
   return (
     <Grid container>

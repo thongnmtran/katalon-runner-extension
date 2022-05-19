@@ -17,7 +17,9 @@ const EventName = {
   message: 'message',
   update: 'update',
   setSteps: 'setSteps',
-  setTheme: 'setTheme'
+  setTheme: 'setTheme',
+  setOnline: 'setOnline',
+  openScript: 'openScript'
 };
 
 module.exports = EventName;

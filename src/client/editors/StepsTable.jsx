@@ -1,5 +1,9 @@
 import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
+import { Button, Grid } from '@mui/material';
+import { OpenInNewOffRounded } from '@mui/icons-material';
+import EventName from 'main/utils/EventName';
+import { thenPostEvent } from 'client/utils/CodeUtils';
 
 
 export default function StepsTable({ steps = [] }) {
@@ -70,6 +74,23 @@ export default function StepsTable({ steps = [] }) {
     return null;
   }, []);
 
+  const Toolbar = React.useCallback(() => (
+    <GridToolbarContainer>
+      <Grid container spacing={1}>
+        <Grid item>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={thenPostEvent(EventName.openScript)}
+            // disabled={!!instances?.length}
+          >
+            <OpenInNewOffRounded fontSize="inherit" /> Open script
+          </Button>
+        </Grid>
+      </Grid>
+    </GridToolbarContainer>
+  ), []);
+
   return (
     <DataGrid
       autoHeight
@@ -77,6 +98,9 @@ export default function StepsTable({ steps = [] }) {
       getRowId={(instanceI) => instanceI.id}
       pageSize={5}
       density="compact"
+      components={{
+        Toolbar
+      }}
       columns={[
         {
           field: 'id',

@@ -12,5 +12,5 @@ export function getBaseName(filePath: string) {
     filePath.lastIndexOf('/'),
     filePath.lastIndexOf('\\')
   ].find((indexI) => indexI >= 0);
-  return filePath.slice(lastIndex + 1);
+  return filePath.slice(lastIndex + 1).replace(/\.tc|\.ts/, '');
 }

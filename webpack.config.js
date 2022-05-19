@@ -15,7 +15,6 @@ const webpack = require('webpack');
 
 /** @type WebpackConfig */
 const webExtensionConfig = {
-	// mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
 	target: 'webworker', // extensions run in a webworker context
 	entry: {
 		'extension': './src/main/extension.ts',
@@ -63,9 +62,10 @@ const webExtensionConfig = {
 	performance: {
 		hints: false
 	},
-	// devtool: 'nosources-source-map', // create a source map that points to the original source file
-  mode: 'development',
-  devtool: 'source-map',
+	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
+	devtool: 'nosources-source-map', // create a source map that points to the original source file
+  // mode: 'development',
+  // devtool: 'source-map',
 	infrastructureLogging: {
 		level: "log", // enables logging required for problem matchers
 	},
