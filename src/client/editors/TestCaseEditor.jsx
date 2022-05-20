@@ -4,8 +4,11 @@ import React from 'react';
 import vscode from 'client/utils/vscode';
 import EventName from 'main/utils/EventName';
 import { postEvent } from 'client/utils/CodeUtils';
+import CCard from 'client/components/override/card/CCard';
+import CTypography from 'client/components/override/label/CTypography';
 import InstancesTable from './InstancesTable';
 import StepsTable from './StepsTable';
+import LogViewer from './LogViewer';
 
 
 export default function TestCaseEditor() {
@@ -13,6 +16,8 @@ export default function TestCaseEditor() {
   const [instances, setInstances] = React.useState([]);
   const [steps, setSteps] = React.useState([]);
   const [isOnline, setOnline] = React.useState(false);
+  const [logs, setLogs] = React.useState([]);
+  const [scriptOpened, setScriptOpened] = React.useState(false);
 
   React.useEffect(() => {
     const state = vscode.getState();
@@ -21,6 +26,7 @@ export default function TestCaseEditor() {
       setInstances(state.instances || []);
       setSteps(state.steps || []);
       setOnline(state.online || false);
+      setScriptOpened(state.scriptOpened || false);
     }
   }, []);
 
@@ -80,10 +86,22 @@ export default function TestCaseEditor() {
         console.log(newSteps);
         break;
       }
+      case EventName.setLogs: {
+        const { logs: newLogs } = message;
+        setState({ logs: newLogs });
+        setLogs(newLogs);
+        break;
+      }
       case EventName.setOnline: {
         const { online: newOnline } = message;
         setState({ online: newOnline });
         setOnline(newOnline);
+        break;
+      }
+      case EventName.setScriptOpened: {
+        const { scriptOpened: newScriptOpened } = message;
+        setState({ scriptOpened: newScriptOpened });
+        setScriptOpened(newScriptOpened);
         break;
       }
       default:
@@ -99,18 +117,20 @@ export default function TestCaseEditor() {
   }, []);
 
   return (
-    <Grid container spacing={2} sx={{ height: 'auto' }} mt={1}>
+    <Grid container spacing={2} sx={{ height: 'auto' }} mt={-1}>
       <Grid item xs={12} md={6}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography variant="h5">{testCase?.name}</Typography>
+            <CTypography variant="h5" color="secondary">{testCase?.name}</CTypography>
             {/* <Typography>Description: {testCase?.description}</Typography>
-            <Typography>Tags: {testCase?.tag}</Typography>
-            <Typography>Comment: {testCase?.comment}</Typography> */}
+              <Typography>Tags: {testCase?.tag}</Typography>
+              <Typography>Comment: {testCase?.comment}</Typography> */}
             {/* <Typography>Id: {testCase.testCaseGuid}</Typography> */}
           </Grid>
           <Grid item xs={12}>
-            <StepsTable steps={steps} />
+            <CCard level={2}>
+              <StepsTable steps={steps} scriptOpened={scriptOpened} />
+            </CCard>
           </Grid>
         </Grid>
       </Grid>
@@ -118,18 +138,27 @@ export default function TestCaseEditor() {
       <Grid item xs={12} md={6}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography variant="h5">Online Instances</Typography>
+            <CTypography variant="h5" color="secondary">Online Instances</CTypography>
           </Grid>
           <Grid item xs={12} sx={{ minWidth: '300px' }}>
-            <InstancesTable
-              instances={instances}
-              onRun={handleRunTestCase}
-              onStop={handleStopServer}
-              onStartNewInstance={handleStartNewInstance}
-              isOnline={isOnline}
-            />
+            <CCard level={2}>
+              <InstancesTable
+                instances={instances}
+                onRun={handleRunTestCase}
+                onStop={handleStopServer}
+                onStartNewInstance={handleStartNewInstance}
+                isOnline={isOnline}
+                useTest
+              />
+            </CCard>
           </Grid>
         </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <CCard level={2}>
+          <LogViewer logs={logs} />
+        </CCard>
       </Grid>
     </Grid>
   );

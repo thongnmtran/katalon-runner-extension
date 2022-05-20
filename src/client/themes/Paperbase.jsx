@@ -5,7 +5,13 @@ import createTheme from '@mui/material/styles/createTheme';
 
 export const lightTheme = createTheme({
   palette: {
-    mode: 'light'
+    mode: 'light',
+    primary: {
+      main: '#32b171'
+    },
+    secondary: {
+      main: '#255475'
+    }
   }
 });
 

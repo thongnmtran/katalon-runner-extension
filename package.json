@@ -2,7 +2,7 @@
 	"name": "katalon-runner",
 	"displayName": "Katalon Runner",
 	"description": "",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"engines": {
 		"vscode": "^1.66.0",
 		"node": "^14.x"
@@ -27,6 +27,58 @@
 			{
 				"command": "katalon-runner.helloWorld",
 				"title": "Run on Katalon Cloud"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "katalon-explorer-panel",
+					"title": "Katalon Explorer",
+					"icon": "./media/katalon-logo.svg"
+				}
+			]
+		},
+		"views": {
+			"katalon-explorer-panel": [
+				{
+					"type": "webview",
+					"id": "katalon.view.explorer",
+					"name": "Tests Explorer"
+				},
+				{
+					"id": "katalon.view.keywords",
+					"name": "Keywords"
+				}
+			]
+		},
+		"languages": [
+			{
+				"id": "katalon.testcase",
+				"extensions": [
+					".tc"
+				],
+				"aliases": [
+					"Katalon Test Case",
+					"ktc"
+				],
+				"icon": {
+					"light": "./media/katalon-200.png",
+					"dark": "./media/katalon-200.png"
+				}
+			},
+			{
+				"id": "katalon.testsuite",
+				"extensions": [
+					".kts"
+				],
+				"aliases": [
+					"Katalon Test Suite",
+					"kts"
+				],
+				"icon": {
+					"light": "./media/katalon-200.png",
+					"dark": "./media/katalon-200.png"
+				}
 			}
 		],
 		"customEditors": [
@@ -67,6 +119,7 @@
 		"build": "webpack --config config/webpack/webpack.prod.js --progress"
 	},
 	"dependencies": {
+		"@codemirror/lang-javascript": "^0.20.0",
 		"@emotion/react": "^11.7.1",
 		"@emotion/styled": "^11.6.0",
 		"@fortawesome/fontawesome-free": "^6.1.1",
@@ -77,11 +130,14 @@
 		"@mui/styles": "^5.6.2",
 		"@mui/x-data-grid": "^5.10.0",
 		"@mui/x-data-grid-generator": "^5.10.0",
+		"@uiw/react-codemirror": "^4.7.0",
 		"abstract-syntax-tree": "^2.20.6",
 		"axios": "^0.27.2",
 		"classnames": "^2.3.1",
+		"codemirror": "^5.65.3",
 		"colors": "^1.4.0",
 		"core-js": "^3.22.2",
+		"css-loader": "^6.7.1",
 		"moment": "^2.29.3",
 		"path-browserify": "^1.0.1",
 		"react": "^17.0.2",
@@ -90,7 +146,8 @@
 		"react-hot-loader": "^4.13.0",
 		"react-router-dom": "^6.3.0",
 		"react-spinners": "^0.11.0",
-		"socket.io-client": "^4.5.0"
+		"socket.io-client": "^4.5.0",
+		"style-loader": "^3.3.1"
 	},
 	"devDependencies": {
 		"@babel/preset-react": "^7.16.7",

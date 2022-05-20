@@ -1,13 +1,12 @@
 import React from 'react';
-import {
-  DataGrid, GridActionsCellItem, GridToolbarContainer
-} from '@mui/x-data-grid';
+import { GridActionsCellItem, GridToolbarContainer } from '@mui/x-data-grid';
 import StopCircleRounded from '@mui/icons-material/StopCircleRounded';
 import PlayCircleRounded from '@mui/icons-material/PlayCircleRounded';
 import { Button, Grid, Box } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import vscode from 'client/utils/vscode';
 import moment from 'moment';
+import CTable from 'client/components/override/table/CTable';
 
 
 function OnLineIcon({ isOnline }) {
@@ -25,7 +24,7 @@ function OnLineIcon({ isOnline }) {
 }
 
 export default function InstancesTable({
-  instances, onRun, onStop, onStartNewInstance, isOnline
+  instances, onRun, onStop, onStartNewInstance, isOnline, useTest
 }) {
   const dispatchEvent = React.useCallback((type, data) => () => {
     vscode.postMessage({
@@ -36,7 +35,7 @@ export default function InstancesTable({
 
   const renderActions = React.useCallback((instance) => [
     <GridActionsCellItem
-      icon={<PlayCircleRounded />}
+      icon={<PlayCircleRounded sx={{ color: (theme) => theme.palette.primary.main }} />}
       onClick={() => onRun(instance)}
       label="Run on this instance"
       title="Run on this instance"
@@ -56,16 +55,18 @@ export default function InstancesTable({
         <Grid item>
           <OnLineIcon isOnline={isOnline} />
         </Grid>
-        <Grid item>
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={dispatchEvent('test')}
-            // disabled={!!instances?.length}
-          >
-            <PlayArrow fontSize="inherit" /> Test
-          </Button>
-        </Grid>
+        {useTest && (
+          <Grid item>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={dispatchEvent('test')}
+              // disabled={!!instances?.length}
+            >
+              <PlayArrow fontSize="inherit" /> Test
+            </Button>
+          </Grid>
+        )}
         <Grid item>
           <Button
             size="small"
@@ -83,7 +84,7 @@ export default function InstancesTable({
   return (
     <Grid container>
       <Grid item xs={12}>
-        <DataGrid
+        <CTable
           autoHeight
           rows={instances}
           getRowId={(instanceI) => instanceI.id || Math.random()}

@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-useless-constructor */
 import EventName from 'main/utils/EventName';
 import vscode from 'msvscode';
+import { CancellationToken, TextDocument, WebviewPanel } from 'vscode';
 // eslint-disable-next-line import/no-unresolved
 import { getNonce } from '../utils/utils';
 
@@ -25,27 +27,10 @@ export default class BaseEditorProvider implements vscode.CustomTextEditorProvid
     return providerRegistration;
   }
 
-  protected webviewPanel?: vscode.WebviewPanel;
-
-  protected webview?: vscode.Webview;
-
-  protected document?: vscode.TextDocument;
-
   constructor(
     protected readonly context: vscode.ExtensionContext
   ) {
     //
-  }
-
-  protected postMessage(type: string, data: any) {
-    this.webview?.postMessage({
-      type,
-      ...(data || {})
-    });
-  }
-
-  protected updateText() {
-    this.postMessage('update', { text: this.document?.getText() });
   }
 
   public async resolveCustomTextEditor(
@@ -53,10 +38,6 @@ export default class BaseEditorProvider implements vscode.CustomTextEditorProvid
     webviewPanel: vscode.WebviewPanel,
     _token: vscode.CancellationToken
   ): Promise<void> {
-    this.webviewPanel = webviewPanel;
-    this.webview = webviewPanel.webview;
-    this.document = document;
-
     webviewPanel.webview.options = {
       enableScripts: true
     };
@@ -64,41 +45,16 @@ export default class BaseEditorProvider implements vscode.CustomTextEditorProvid
     webviewPanel.iconPath = vscode.Uri.joinPath(this.context.extensionUri, 'media', 'paw-color.svg');
     webviewPanel.title = 'Test Case';
 
-    const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument((event) => {
-      if (event.document.uri.toString() === document.uri.toString()) {
-        this.updateText();
-      }
-    });
-
-    // Make sure we get rid of the listener when our editor is closed.
-    webviewPanel.onDidDispose(() => {
-      changeDocumentSubscription.dispose();
-      this.dispose();
-    });
-
-    vscode.window.onDidChangeActiveColorTheme((event) => {
-      this.postMessage(EventName.setTheme, { data: event.kind });
-    });
-
-    this.init();
+    this.init(document, webviewPanel, _token);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected dispose() {
+  protected async init(document: TextDocument, webviewPanel: WebviewPanel, _token: CancellationToken) {
     //
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  protected init() {
-
-  }
-
-  protected onMessage(listener: vscode.Event<any>) {
-    this.webview?.onDidReceiveMessage(listener);
-  }
-
   protected getHtmlForWebview(webview: vscode.Webview): string {
-    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'build', 'client.js'));
+    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'build', 'TestCaseEntry.js'));
     const bundleJs = scriptUri;
     // const bundleJs = 'http://localhost:8080/client.js';
 
@@ -121,9 +77,7 @@ export default class BaseEditorProvider implements vscode.CustomTextEditorProvid
       <html lang="en">
       <head>
         <meta charset="UTF-8">
-
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <title>Cat Scratch</title>
       </head>
       <body>

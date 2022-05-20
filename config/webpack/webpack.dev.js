@@ -6,6 +6,7 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
+    port: '8888',
     devMiddleware: {
       index: true,
       mimeTypes: { phtml: 'text/html' },

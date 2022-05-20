@@ -9,6 +9,7 @@
 			"name": "Run Web Extension",
 			"type": "pwa-extensionHost",
 			"debugWebWorkerHost": true,
+			"sourceMaps": true,
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",

@@ -15,4 +15,17 @@ export default class VSCodeUtils {
     const scriptFile = scriptFiles[0];
     return vscode.workspace.openTextDocument(scriptFile);
   }
+
+  static findDocument = (
+    document: vscode.TextDocument
+  ) => (documentI: vscode.TextDocument) => this.isSame(documentI, document);
+
+  static findEditor = (
+    document: vscode.TextDocument
+  ) => (editorI: vscode.TextEditor) => this.isSame(editorI.document, document);
+
+  static isSame = (
+    documentA: vscode.TextDocument,
+    documentB: vscode.TextDocument
+  ) => documentA?.uri?.toString() === documentB?.uri?.toString();
 }

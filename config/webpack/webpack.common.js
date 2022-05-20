@@ -6,7 +6,9 @@ module.exports = {
   target: 'web',
   mode: 'production',
   entry: {
-    client: './src/client/app/client.jsx'
+    TestCaseEntry: './src/client/app/TestCaseEntry.jsx',
+    // TestSuite: './src/client/app/TestCaseEntry.jsx',
+    ExplorerView: './src/client/app/ExplorerEntry.jsx'
   },
   output: {
     filename: '[name].js',
@@ -35,10 +37,14 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
   plugins: [
-    new CleanPlugin()
+    new CleanPlugin({ dry: false, keep: false })
   ]
 };

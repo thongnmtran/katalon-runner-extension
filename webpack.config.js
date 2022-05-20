@@ -63,7 +63,8 @@ const webExtensionConfig = {
 		hints: false
 	},
 	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
-	devtool: 'nosources-source-map', // create a source map that points to the original source file
+	// devtool: 'nosources-source-map', // create a source map that points to the original source file
+	devtool: 'source-map',
   // mode: 'development',
   // devtool: 'source-map',
 	infrastructureLogging: {

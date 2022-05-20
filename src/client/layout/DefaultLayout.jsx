@@ -1,6 +1,6 @@
 import React from 'react';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import CssBaseline from '@mui/material/CssBaseline';
+// import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import createGenerateClassName from '@mui/styles/createGenerateClassName';
 import StylesProvider from '@mui/styles/StylesProvider';
@@ -70,7 +70,14 @@ export default function DefaultLayout({ children }) {
   return (
     <StylesProvider generateClassName={generateClassName}>
       <ThemeProvider theme={activeTheme}>
-        <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
+        <Box sx={{
+          display: 'flex',
+          minHeight: '100vh',
+          width: 'calc(100% + 40px)',
+          marginRight: '-20px',
+          marginLeft: '-20px'
+        }}
+        >
           {/* <CssBaseline /> */}
           {children}
         </Box>

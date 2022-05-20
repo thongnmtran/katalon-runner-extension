@@ -13,13 +13,17 @@ const EventName = {
   stop: 'stop',
 
   // Vscode
+  test: 'test',
   loaded: 'loaded',
   message: 'message',
   update: 'update',
   setSteps: 'setSteps',
+  setLogs: 'setLogs',
   setTheme: 'setTheme',
   setOnline: 'setOnline',
-  openScript: 'openScript'
+  openScript: 'openScript',
+  closeScript: 'closeScript',
+  setScriptOpened: 'setScriptOpened'
 };
 
 module.exports = EventName;
