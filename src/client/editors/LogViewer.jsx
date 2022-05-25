@@ -11,6 +11,15 @@ export default function LogViewer({ logs = [], onCommand, instance }) {
 
   const value = React.useMemo(() => logs.join('\r\n'), [logs]);
 
+  React.useEffect(() => {
+    const scroller = editor.current?.querySelector('.cm-scroller');
+    scroller?.scrollTo({
+      top: scroller?.scrollHeight,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [value]);
+
   const { state, setState, setContainer } = useCodeMirror({
     container: editor.current,
     extensions: [javascript({ jsx: true })],

@@ -51,19 +51,23 @@ export default class GitHelper {
   }
 
   static async getChanges() {
-    await vscode.commands.executeCommand('remoteHub.exportPatch', { preserveFocus: false });
-    const changesFile = vscode.workspace.textDocuments.find((docI) => docI.isUntitled && docI.languageId === 'diff');
-    const changes = changesFile?.getText();
+    try {
+      await vscode.commands.executeCommand('remoteHub.exportPatch', { preserveFocus: false });
+      const changesFile = vscode.workspace.textDocuments.find((docI) => docI.isUntitled && docI.languageId === 'diff');
+      const changes = changesFile?.getText();
 
-    if (!changes) {
+      if (!changes) {
+        return null;
+      }
+
+      // await VSCodeUtils.clearText(changesFile);
+      // await VSCodeUtils.hide(changesFile);
+      await VSCodeUtils.close(changesFile, true);
+
+      return `${changes.replace(/^--- /gm, '--- a/').replace(/^\+\+\+ /gm, '+++ b/')}\r\n`;
+    } catch {
       return null;
     }
-
-    // await VSCodeUtils.clearText(changesFile);
-    // await VSCodeUtils.hide(changesFile);
-    await VSCodeUtils.close(changesFile, true);
-
-    return `${changes.replace(/^--- /gm, '--- a/').replace(/^\+\+\+ /gm, '+++ b/')}\r\n`;
   }
 
   static async test() {
