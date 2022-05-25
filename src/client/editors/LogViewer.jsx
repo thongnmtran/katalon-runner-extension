@@ -3,9 +3,10 @@ import CodeMirror, { useCodeMirror } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
+import { TextField } from '@mui/material';
 
 
-export default function LogViewer({ logs = [] }) {
+export default function LogViewer({ logs = [], onCommand, instance }) {
   const editor = React.useRef();
 
   const value = React.useMemo(() => logs.join('\r\n'), [logs]);
@@ -27,9 +28,24 @@ export default function LogViewer({ logs = [] }) {
     }
   }, [editor.current]);
 
+  const handleKeyDown = React.useCallback((event) => {
+    const { target, target: { value: command } } = event;
+    if (event.key === 'Enter') {
+      onCommand?.(command);
+      target.value = '';
+    }
+  }, [onCommand]);
+
   return (
     <>
       <div ref={editor} />
+      <TextField
+        fullWidth
+        variant="outlined"
+        onKeyDownCapture={handleKeyDown}
+        size="small"
+        placeholder={instance ? `Instance ${instance?.id}` : ''}
+      />
       {/* <CodeMirror
         value={value}
         // options={{

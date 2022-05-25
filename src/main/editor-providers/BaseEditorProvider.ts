@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-useless-constructor */
-import EventName from 'main/utils/EventName';
 import vscode from 'msvscode';
 import { CancellationToken, TextDocument, WebviewPanel } from 'vscode';
 // eslint-disable-next-line import/no-unresolved

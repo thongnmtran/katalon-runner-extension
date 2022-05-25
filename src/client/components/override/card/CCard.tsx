@@ -26,7 +26,7 @@ export default function CCard(props: CCardProps) {
   return (
     <Card
       sx={{
-        backgroundColor: ColorByLevel[level - 1] || ColorByLevel[0]
+        backgroundColor: ColorByLevel?.[level - 1] || ColorByLevel?.[0]
       }}
       elevation={1}
       {...restProps}

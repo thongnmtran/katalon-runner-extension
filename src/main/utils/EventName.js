@@ -11,6 +11,7 @@ const EventName = {
   registerInstance: 'registerInstance',
   run: 'run',
   stop: 'stop',
+  command: 'command',
 
   // Vscode
   test: 'test',

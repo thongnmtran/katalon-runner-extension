@@ -13,6 +13,7 @@ import LogViewer from './LogViewer';
 
 export default function TestCaseEditor() {
   const [testCase, setTestCase] = React.useState(null);
+  const [lastInstance, setLastInstance] = React.useState(null);
   const [instances, setInstances] = React.useState([]);
   const [steps, setSteps] = React.useState([]);
   const [isOnline, setOnline] = React.useState(false);
@@ -20,10 +21,19 @@ export default function TestCaseEditor() {
   const [scriptOpened, setScriptOpened] = React.useState(false);
 
   React.useEffect(() => {
+    setLastInstance(
+      (curInstance) => instances.find(
+        (instanceI) => !curInstance?.id || instanceI?.id === curInstance?.id
+      )
+    );
+  }, [instances]);
+
+  React.useEffect(() => {
     const state = vscode.getState();
     if (state) {
       setTestCase(parseTestCase(state.text));
       setInstances(state.instances || []);
+      setLastInstance(state.instances?.[0]);
       setSteps(state.steps || []);
       setOnline(state.online || false);
       setScriptOpened(state.scriptOpened || false);
@@ -32,6 +42,7 @@ export default function TestCaseEditor() {
 
   const handleRunTestCase = React.useCallback((instance) => {
     postEvent(EventName.run, { instance });
+    setLastInstance(instance);
   }, []);
 
   const handleStopServer = React.useCallback((instance) => {
@@ -157,7 +168,13 @@ export default function TestCaseEditor() {
 
       <Grid item xs={12}>
         <CCard level={2}>
-          <LogViewer logs={logs} />
+          <LogViewer
+            logs={logs}
+            instance={lastInstance}
+            onCommand={
+              (command) => postEvent(EventName.command, { command, instance: lastInstance })
+            }
+          />
         </CCard>
       </Grid>
     </Grid>

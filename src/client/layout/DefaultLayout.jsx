@@ -55,6 +55,7 @@ export default function DefaultLayout({ children }) {
   React.useEffect(() => {
     function onMessage(event) {
       if (event?.data?.type === EventName.setTheme) {
+        console.log('Theme change: ', event?.data);
         setTheme(ThemeIdMap[event?.data?.data]);
       }
     }
@@ -64,7 +65,7 @@ export default function DefaultLayout({ children }) {
     };
   }, []);
 
-  console.log(theme);
+  console.log(`Theme change: ${theme}`, Themes[theme]);
   const activeTheme = Themes[theme];
 
   return (

@@ -86,7 +86,15 @@ export default class TestCaseEditor extends VirtualEditor {
         this.appendLog('╚════════════════════════════════════════════════╝'.padStart(90, ' '));
         this.appendLog('');
 
-        session.sendTo(event.data?.instance?.id, EventName.run, `./build/${getBaseName(this.document.fileName)}.js`);
+        const allChanges = await GitHelper.getChanges();
+
+        session.sendTo(event.data?.instance?.id, EventName.run, `./build/${getBaseName(this.document.fileName)}.js`, allChanges);
+        break;
+      }
+      case EventName.command: {
+        const command = event.data?.command;
+        this.appendLog(`$ ${command} -> ${event.data?.instance?.id}`);
+        session.sendTo(event.data?.instance?.id, EventName.command, command);
         break;
       }
       case EventName.stop:
@@ -106,8 +114,7 @@ export default class TestCaseEditor extends VirtualEditor {
         });
         break;
       case EventName.closeScript:
-        vscode.window.showTextDocument(this.script.uri, { preview: true, preserveFocus: false })
-          .then(() => vscode.commands.executeCommand('workbench.action.closeActiveEditor'));
+        VSCodeUtils.close(this.script);
         break;
       default:
         break;

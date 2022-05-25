@@ -15,7 +15,6 @@ export default function EditorLayout({ children }) {
         paddingBottom: '20px'
       }}
       >
-        {/* <CssBaseline /> */}
         {children}
       </Box>
     </DefaultLayout>

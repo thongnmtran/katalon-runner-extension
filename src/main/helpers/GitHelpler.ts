@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+import VSCodeUtils from 'main/utils/vscodeUtils';
 import vscode from 'msvscode';
 import {
   API as GitAPI, GitExtension, APIState, Repository
@@ -48,8 +50,26 @@ export default class GitHelper {
     console.log(gitSCM.rootUri);
   }
 
+  static async getChanges() {
+    await vscode.commands.executeCommand('remoteHub.exportPatch', { preserveFocus: false });
+    const changesFile = vscode.workspace.textDocuments.find((docI) => docI.isUntitled && docI.languageId === 'diff');
+    const changes = changesFile?.getText();
+
+    if (!changes) {
+      return null;
+    }
+
+    // await VSCodeUtils.clearText(changesFile);
+    // await VSCodeUtils.hide(changesFile);
+    await VSCodeUtils.close(changesFile, true);
+
+    return `${changes.replace(/^--- /gm, '--- a/').replace(/^\+\+\+ /gm, '+++ b/')}\r\n`;
+  }
+
   static async test() {
-    const changes = await this.showChanges();
+    const git = vscode.extensions.getExtension('ms-vscode.remote-repositories').exports;
+
+    const changes = await this.getChanges();
     console.log(changes);
   }
 }
